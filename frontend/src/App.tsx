@@ -1,10 +1,10 @@
 import React from 'react';
-import './App.css';
+import './App.sass';
 import GameDetail from './pages/GameDetail';
 
 function App() {
   return (
-    <div className="App">
+    <div className='App'>
       <GameDetail/>
     </div>
   );
