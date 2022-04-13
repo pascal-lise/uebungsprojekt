@@ -1,6 +1,9 @@
 package lise.uebungsprojekt.model
 
+import org.bson.types.ObjectId
+import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
+import java.util.*
 
 @Document
-data class Game(val name: String, val releaseDate: String, val dev: String, val ratings: List<Rating>?)
+data class Game(@Id val id: ObjectId, val name: String, val releaseDate: Date, val dev: String, var ratings: List<Rating>?)

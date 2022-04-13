@@ -13,8 +13,23 @@ import org.springframework.stereotype.Repository
 class GameCustomRepositoryImpl(@Autowired val mongoTemplate: MongoTemplate) : GameCustomRepository {
 
     override fun getGameAndRatingsById(id: ObjectId): Game? {
+        return this.getRatingsByGameId(id)
+    }
+
+    override fun findAll(): List<Game> {
+        val games: List<Game> = mongoTemplate.findAll(Game::class.java)
+        for(game in games) {
+            val gameWithRatings: Game? = this.getGameAndRatingsById(game.id)
+            if (gameWithRatings != null) {
+                game.ratings = gameWithRatings.ratings
+            }
+        }
+        return games
+    }
+
+    private fun getRatingsByGameId(gameId: ObjectId): Game? {
         val lookup: LookupOperation = Aggregation.lookup("ratings","_id","gameId","ratings")
-        val agg: Aggregation = Aggregation.newAggregation(Aggregation.match(Criteria.where("_id").`is`(id)), lookup)
+        val agg: Aggregation = Aggregation.newAggregation(Aggregation.match(Criteria.where("_id").`is`(gameId)), lookup)
         val results: List<Game> = mongoTemplate.aggregate(agg, "game", Game::class.java).mappedResults
         if(results.isNotEmpty())
             return results[0]
