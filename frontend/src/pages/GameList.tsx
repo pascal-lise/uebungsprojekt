@@ -35,7 +35,7 @@ export class GameList extends React.Component<any, Games> {
             .map((game: Game, idx: number) => {
               return (                
                 <Grid item key={idx} xs={4}>
-                  <GameCard name={game.name} developer={game.developer} releaseDate={game.releaseDate} ratings={game.ratings} picturePath={game.picturePath}/>
+                  <GameCard name={game.name} developer={game.developer} releaseDate={game.releaseDate} releaseDateView={game.releaseDateView} ratings={game.ratings} picturePath={game.picturePath}/>
                 </Grid>
               )
             }) 

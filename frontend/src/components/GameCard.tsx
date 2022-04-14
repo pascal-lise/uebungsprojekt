@@ -17,7 +17,7 @@ export default class GameCard extends React.Component<Game, any> {
           <CardMedia component='img' height='135' alt='game pic' image={this.state.picturePath}/>
           <CardContent>
               <Typography variant='h6'>{this.props.name}</Typography>
-              <Typography>Release: {this.props.releaseDate}</Typography>
+              <Typography>Release: {this.props.releaseDateView}</Typography>
               <Typography>Developer: {this.props.developer}</Typography>
           </CardContent>
           <CardActions>

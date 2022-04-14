@@ -2,11 +2,11 @@ import Game from "../../model/Game"
 import GameService from '../service/GameService'
 
 export default {
-    getGameById: async (id: string) => prepareGame(await GameService.getGameById(id)),
-    getGames: async () => (await GameService.getGames()).map((game: Game) => prepareGame(game))
+    getGameById: async (id: string): Promise<Game> => prepareGame(await GameService.getGameById(id)),
+    getGames: async (): Promise<Array<Game>> => (await GameService.getGames()).map((game: Game) => prepareGame(game))
 }
 
 function prepareGame(game: Game) {
-    game.releaseDate = new Date(game.releaseDate).toLocaleDateString()
+    game.releaseDateView = new Date(game.releaseDate).toLocaleDateString()
     return game
 }
