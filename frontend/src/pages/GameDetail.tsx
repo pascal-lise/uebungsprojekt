@@ -1,5 +1,4 @@
 import React from 'react';
-
 export default class GameDetail extends React.Component {
     state = {
       name: '',
@@ -7,17 +6,13 @@ export default class GameDetail extends React.Component {
       developer: ''
     }
 
-    componentDidMount() {
-      fetch('http://localhost:8080/game/624eb25731bdc44005f53105')
-        .then(res => res.json())
-        .then(
-          result => {
-            this.setState(result);
-          },
-          e => {
-            this.setState({});
-          }
-        )
+    async componentDidMount() {
+      try {
+        const result = await fetch(`${process.env.REACT_APP_API_URL}/game/624eb25731bdc44005f53105`)
+        this.setState(await result.json())
+      } catch(e) {
+        this.setState({});
+      }
     }
     
     render() {
