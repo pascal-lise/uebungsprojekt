@@ -2,8 +2,8 @@ import Rating from "./Rating";
 
 export default interface Game {
     name: string;
-    dev: string,
-    releaseDate: Date,
+    developer: string,
+    releaseDate: string,
     ratings: Array<Rating>,
-    picName: string
+    picturePath: string
 }

@@ -4,9 +4,9 @@ import GameCard from '../components/GameCard';
 import Game from '../model/Game';
 import Games from '../model/Games';
 import './GameList.sass';
-import '../middleware/GameService'
+import '../middleware/service/GameService'
 import compareGames from '../util/SortGames';
-import { getGames } from '../middleware/GameService';
+import GameController from '../middleware/controller/GameController';
 
 export class GameList extends React.Component<any, Games> {
   constructor(props: any) {
@@ -16,11 +16,13 @@ export class GameList extends React.Component<any, Games> {
     }
   }
 
-  componentDidMount() {
-    getGames().then(
-      result => this.setState({ games: result }),
-      e => this.setState({})
-    )
+  async componentDidMount() {
+    try {
+      const games = await GameController.getGames()
+      this.setState({ games: games })
+    } catch(e) {
+      this.setState({})
+    }
   }
 
   render() {
@@ -33,7 +35,7 @@ export class GameList extends React.Component<any, Games> {
             .map((game: Game, idx: number) => {
               return (                
                 <Grid item key={idx} xs={4}>
-                  <GameCard name={game.name} dev={game.dev} releaseDate={game.releaseDate} ratings={game.ratings} picName={game.picName}/>
+                  <GameCard name={game.name} developer={game.developer} releaseDate={game.releaseDate} ratings={game.ratings} picturePath={game.picturePath}/>
                 </Grid>
               )
             }) 

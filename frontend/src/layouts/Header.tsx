@@ -7,11 +7,7 @@ export default class Header extends React.Component {
     return (
         <AppBar position='static' className='header'>
           <Toolbar>
-            <Typography variant='h5'>
-              Spiele-Plattform
-            </Typography>
-              <div>
-              </div>
+            <Typography variant='h5'>Spiele-Plattform</Typography>
           </Toolbar>
         </AppBar>
     )

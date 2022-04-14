@@ -7,18 +7,18 @@ export default class GameCard extends React.Component<Game, any> {
   constructor(props: Game) {
     super(props)
     this.state = {
-      pic: `/images/${this.props.picName}.jpg`
+      picturePath: this.props.picturePath
     }
   }
 
   render() {
     return (
       <Card className='game-card'>
-          <CardMedia component='img' height='135' alt='game pic' image={this.state.pic}/>
+          <CardMedia component='img' height='135' alt='game pic' image={this.state.picturePath}/>
           <CardContent>
               <Typography variant='h6'>{this.props.name}</Typography>
-              <Typography>Date: {new Date(this.props.releaseDate).toLocaleDateString()}</Typography>
-              <Typography>Publisher: {this.props.dev}</Typography>
+              <Typography>Release: {this.props.releaseDate}</Typography>
+              <Typography>Developer: {this.props.developer}</Typography>
           </CardContent>
           <CardActions>
           </CardActions>
