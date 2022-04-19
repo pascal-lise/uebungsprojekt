@@ -1,11 +1,12 @@
-import React from 'react';
 import './App.sass';
-import GameDetail from './pages/GameDetail';
+import Header from './layouts/Header';
+import Main from './layouts/Main';
 
 function App() {
   return (
     <div className='App'>
-      <GameDetail/>
+      <Header/>
+      <Main/>
     </div>
   );
 }

@@ -3,7 +3,7 @@ export default class GameDetail extends React.Component {
     state = {
       name: '',
       releaseDate: '',
-      dev: ''
+      developer: ''
     }
 
     async componentDidMount() {
@@ -20,7 +20,7 @@ export default class GameDetail extends React.Component {
         <div className='game-detail'>
           <h1>{this.state.name}</h1>
           <p>{this.state.releaseDate}</p>
-          <p>{this.state.dev}</p>
+          <p>{this.state.developer}</p>
         </div>
       );
     }

@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface GameCustomRepository {
     fun getGameAndRatingsById(id: ObjectId): Game?
+    fun findAll(): List<Game>
 }
