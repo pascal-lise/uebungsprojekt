@@ -1,4 +1,4 @@
-import Game from '../model/Game';
+import Game from 'model/Game';
 
 export function getGameRateAvg(game: Game): number {
     const sum: number = game.ratings.reduce((sum: number, current: any) => sum + current.value, 0)       

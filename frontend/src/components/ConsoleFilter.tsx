@@ -1,6 +1,6 @@
 import { OutlinedInput, InputLabel, MenuItem, FormControl, ListItemText, Checkbox, Select }  from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
-import Console from '../model/Console';
+import Console from 'model/Console';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;

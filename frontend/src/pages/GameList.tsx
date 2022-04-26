@@ -1,13 +1,13 @@
 import { Grid, SelectChangeEvent } from '@mui/material';
 import { useEffect, useState } from 'react';
-import GameCard from '../components/GameCard';
-import Game from '../model/Game';
-import Console from '../model/Console';
+import GameCard from 'components/GameCard';
+import Game from 'model/Game';
+import Console from 'model/Console';
 import './GameList.sass';
-import compareGames from '../util/SortGames';
-import ConsoleFilter from '../components/ConsoleFilter';
-import GameController from '../middleware/controller/GameController';
-import ConsoleController from '../middleware/controller/ConsoleController';
+import compareGames from 'util/SortGames';
+import ConsoleFilter from 'components/ConsoleFilter';
+import GameController from 'middleware/controller/GameController';
+import ConsoleController from 'middleware/controller/ConsoleController';
 
 export default function GameList() {
   const [consoles, setConsoles] = useState<Console[]>([])

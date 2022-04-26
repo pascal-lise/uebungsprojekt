@@ -1,5 +1,5 @@
 import { Card, CardActions, CardContent, CardMedia, Typography } from '@mui/material';
-import Game from '../model/Game';
+import Game from 'model/Game';
 
 interface GameCardProps {
   game: Game

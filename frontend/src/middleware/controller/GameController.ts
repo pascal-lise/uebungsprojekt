@@ -1,5 +1,5 @@
-import Game from "../../model/Game"
-import GameService from '../service/GameService'
+import Game from "model/Game"
+import GameService from 'middleware/service/GameService'
 
 export default {
     getGameById: async (id: string): Promise<Game> => prepareGame(await GameService.getGameById(id)),

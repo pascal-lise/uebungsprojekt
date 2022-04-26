@@ -1,5 +1,5 @@
 import { getGameRateAvg } from './GameRateAvg'
-import Game from '../model/Game';
+import Game from 'model/Game';
 
 export default function compareGames(a: Game, b: Game): number {
     const avgA: number = getGameRateAvg(a)
