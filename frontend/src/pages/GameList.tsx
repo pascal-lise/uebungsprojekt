@@ -1,49 +1,49 @@
-import { Grid } from '@mui/material';
-import React from 'react';
+import { Grid, SelectChangeEvent } from '@mui/material';
+import { useEffect, useState } from 'react';
 import GameCard from '../components/GameCard';
 import Game from '../model/Game';
-import Games from '../model/Games';
+import Console from '../model/Console';
 import './GameList.sass';
-import '../middleware/service/GameService'
 import compareGames from '../util/SortGames';
+import ConsoleFilter from '../components/ConsoleFilter';
 import GameController from '../middleware/controller/GameController';
+import ConsoleController from '../middleware/controller/ConsoleController';
 
-export class GameList extends React.Component<any, Games> {
-  constructor(props: any) {
-    super(props)
-    this.state = {
-      games: []
-    }
+export default function GameList() {
+  const [consoles, setConsoles] = useState<Console[]>([])
+  const [selectedConsoles, setSelectedConsoles] = useState<string[]>([])
+  const [games, setGames] = useState<Game[]>([])
+
+  function handleConsoleFilterChange (event: SelectChangeEvent<typeof selectedConsoles>) {
+    setSelectedConsoles(event.target.value as string[])
   }
 
-  async componentDidMount() {
-    try {
-      const games = await GameController.getGames()
-      this.setState({ games: games })
-    } catch(e) {
-      this.setState({})
-    }
-  }
+  useEffect(() => { 
+    ConsoleController.getConsoles().then(setConsoles)    
+    GameController.getGames().then(setGames)
+  }, [])
 
-  render() {
-    return (
-      <div className='game-list'>
+  return (
+    <div className='game-list'>
+      <div className='game-list-settings'>
+        <ConsoleFilter consoles={consoles} selectedConsoles={selectedConsoles} handleChange={handleConsoleFilterChange}/>
+      </div>
+      <div className='game-list-grid'>
         <Grid container spacing={5}>
           {
-            this.state.games
-            .sort((a: Game, b: Game) => compareGames(a, b))                          
+            games
+            .sort((a: Game, b: Game) => compareGames(a, b))
+            .filter((game: Game) => game.consoles.some((c: Console) => selectedConsoles.includes(c.name) || selectedConsoles.length === 0))
             .map((game: Game, idx: number) => {
               return (                
                 <Grid item key={idx} xs={4}>
-                  <GameCard name={game.name} developer={game.developer} releaseDate={game.releaseDate} releaseDateView={game.releaseDateView} ratings={game.ratings} picturePath={game.picturePath}/>
+                  <GameCard game={game}/>
                 </Grid>
               )
-            }) 
+            })
           }
         </Grid>
       </div>
-    );
-  }
+    </div>
+  );
 }
-
-export default GameList

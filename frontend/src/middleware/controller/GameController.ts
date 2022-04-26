@@ -3,7 +3,7 @@ import GameService from '../service/GameService'
 
 export default {
     getGameById: async (id: string): Promise<Game> => prepareGame(await GameService.getGameById(id)),
-    getGames: async (): Promise<Array<Game>> => (await GameService.getGames()).map((game: Game) => prepareGame(game))
+    getGames: async (): Promise<Game[]> => (await GameService.getGames()).map((game: Game) => prepareGame(game)),
 }
 
 function prepareGame(game: Game) {
