@@ -10,29 +10,29 @@ import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.stereotype.Repository
 
 @Repository
-class GameCustomRepositoryImpl(@Autowired val mongoTemplate: MongoTemplate) : GameCustomRepository {
-
-    override fun getGameAndRatingsById(id: ObjectId): Game? {
-        return this.getRatingsByGameId(id)
-    }
-
-    override fun findAll(): List<Game> {
-        val games: List<Game> = mongoTemplate.findAll(Game::class.java)
-        for(game in games) {
-            val gameWithRatings: Game? = this.getGameAndRatingsById(game.id)
-            if (gameWithRatings != null) {
-                game.ratings = gameWithRatings.ratings
-            }
-        }
-        return games
-    }
-
-    private fun getRatingsByGameId(gameId: ObjectId): Game? {
-        val lookup: LookupOperation = Aggregation.lookup("ratings","_id","gameId","ratings")
-        val agg: Aggregation = Aggregation.newAggregation(Aggregation.match(Criteria.where("_id").`is`(gameId)), lookup)
-        val results: List<Game> = mongoTemplate.aggregate(agg, "game", Game::class.java).mappedResults
+class GameCustomRepositoryImpl(@Autowired val mongoTemplate: MongoTemplate): GameCustomRepository {
+    override fun getGameById(id: ObjectId): Game? {
+        val results: List<Game> = this.getResult(id)
         if(results.isNotEmpty())
             return results[0]
         return null
+    }
+
+    override fun findAll(): List<Game> {
+        val results: List<Game> = this.getResult()
+        if(results.isNotEmpty())
+            return results
+        return ArrayList()
+    }
+
+    private fun getResult(id: ObjectId? = null): List<Game> {
+        val ratingsLookup: LookupOperation =
+            Aggregation.lookup("rating", "_id", "gameId", "ratings")
+        val consoleLookup: LookupOperation =
+            Aggregation.lookup("console", "consoles", "_id", "consoles")
+        val agg: Aggregation = if (id != null)
+            Aggregation.newAggregation(Aggregation.match(Criteria("_id").`is`(id)), consoleLookup, ratingsLookup)
+        else Aggregation.newAggregation(consoleLookup, ratingsLookup)
+        return mongoTemplate.aggregate(agg, "game", Game::class.java).mappedResults
     }
 }
