@@ -1,5 +1,11 @@
-import Console from '../../model/Console';
+import Console from 'model/Console';
 
 export default {
-    getConsoles: async (): Promise<Console[]> => await fetch(`${process.env.REACT_APP_API_URL}/consoles`).then(res => res.json())
+    getConsoles: async (): Promise<Console[]> => {
+        try {
+            return (await fetch(`${process.env.REACT_APP_API_URL}/consoles`)).json()
+        } catch (e) {
+            return await []
+        }
+    } 
 }

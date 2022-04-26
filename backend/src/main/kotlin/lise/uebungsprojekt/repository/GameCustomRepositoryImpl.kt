@@ -19,10 +19,7 @@ class GameCustomRepositoryImpl(@Autowired val mongoTemplate: MongoTemplate): Gam
     }
 
     override fun findAll(): List<Game> {
-        val results: List<Game> = this.getResult()
-        if(results.isNotEmpty())
-            return results
-        return ArrayList()
+        return this.getResult()
     }
 
     private fun getResult(id: ObjectId? = null): List<Game> {

@@ -1,7 +1,7 @@
-import Game from "../../model/Game"
-import compareGames from "../../util/SortGames"
-import GameService from '../service/GameService'
-import Console from '../../model/Console';
+import Game from "model/Game"
+import Console from "model/Console"
+import GameService from 'middleware/service/GameService'
+import compareGames from "util/SortGames"
 
 export default {
     getGameById: async (id: string): Promise<Game> => prepareGame(await GameService.getGameById(id)),

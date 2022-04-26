@@ -1,14 +1,13 @@
-import { Grid, SelectChangeEvent, TextField } from '@mui/material';
+import { Grid, SelectChangeEvent } from '@mui/material';
 import { useEffect, useState } from 'react';
-import GameCard from '../components/GameCard';
-import Game from '../model/Game';
-import Console from '../model/Console';
+import GameCard from 'components/GameCard';
+import Game from 'model/Game';
+import Console from 'model/Console';
 import './GameList.sass';
-import compareGames from '../util/SortGames';
-import ConsoleFilter from '../components/ConsoleFilter';
-import GameController from '../middleware/controller/GameController';
-import ConsoleController from '../middleware/controller/ConsoleController';
-import GameSearchBar from '../components/GameSearchBar';
+import ConsoleFilter from 'components/ConsoleFilter';
+import GameController from 'middleware/controller/GameController';
+import ConsoleController from 'middleware/controller/ConsoleController';
+import GameSearchBar from 'components/GameSearchBar';
 
 export default function GameList() {
   const [consoles, setConsoles] = useState<Console[]>([])

@@ -1,6 +1,6 @@
 import './App.sass';
-import Header from './layouts/Header';
-import Main from './layouts/Main';
+import Header from 'layouts/Header';
+import Main from 'layouts/Main';
 
 function App() {
   return (
