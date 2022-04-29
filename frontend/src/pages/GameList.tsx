@@ -9,22 +9,22 @@ import GameSearchBar from 'components/GameSearchBar';
 import { getGames, getConsoles } from 'api/GamesApi';
 
 export default function GameList() {
-  const [consoles, setConsoles] = useState<Console[]>([])
-  const [selectedConsoles, setSelectedConsoles] = useState<string[]>([])
   const [games, setGames] = useState<Game[]>([])
-  const [searchedGames, setSearchedGames] = useState<Game[]>([])
+  const [selectedConsoles, setSelectedConsoles] = useState<string[]>([])
+  const [consoles, setConsoles] = useState<Console[]>([])
+  const [searchBy, setSearchBy] = useState<string>('')
 
   function handleConsoleFilterChange (event: SelectChangeEvent<typeof selectedConsoles>) {
     setSelectedConsoles(event.target.value as string[])
   }
 
   function handleGameSearchChange (event: React.ChangeEvent<HTMLInputElement>) {
-    setSearchedGames(games.filter((game: Game) => game.name.toLowerCase().includes(event.target.value.toLowerCase())))
+    setSearchBy(event.target.value)
   }
 
   useEffect(() => { 
-    getGames(selectedConsoles).then(setGames)
-  }, [selectedConsoles])
+    getGames(selectedConsoles, searchBy).then(setGames)
+  }, [selectedConsoles, searchBy])
 
   useEffect(() => { 
     getConsoles().then(setConsoles)    
