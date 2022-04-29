@@ -5,9 +5,8 @@ import Game from 'model/Game';
 import Console from 'model/Console';
 import './GameList.sass';
 import ConsoleFilter from 'components/ConsoleFilter';
-import GameController from 'middleware/controller/GameController';
-import ConsoleController from 'middleware/controller/ConsoleController';
 import GameSearchBar from 'components/GameSearchBar';
+import { getGames, getConsoles } from 'api/GamesApi';
 
 export default function GameList() {
   const [consoles, setConsoles] = useState<Console[]>([])
@@ -24,11 +23,11 @@ export default function GameList() {
   }
 
   useEffect(() => { 
-    ConsoleController.getConsoles().then(setConsoles)    
-    GameController.getGames().then((games: Game[]) => {
-      setGames(games)
-      setSearchedGames(games)
-    })
+    getGames(selectedConsoles).then(setGames)
+  }, [selectedConsoles])
+
+  useEffect(() => { 
+    getConsoles().then(setConsoles)    
   }, [])
 
   return (
@@ -40,8 +39,7 @@ export default function GameList() {
       <div className='game-list-grid'>
         <Grid container spacing={5}>
           {
-            GameController.sortGames(
-              GameController.filterByConsoles(searchedGames, selectedConsoles))
+            games
             .map((game: Game, idx: number) => {
               return (                
                 <Grid item key={idx} xs={4}>
