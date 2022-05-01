@@ -1,16 +1,12 @@
 package lise.uebungsprojekt.controller
 
-import lise.uebungsprojekt.model.Console
-import lise.uebungsprojekt.model.Game
-import lise.uebungsprojekt.model.Rating
+import lise.uebungsprojekt.model.*
 import lise.uebungsprojekt.service.GameService
 import org.bson.types.ObjectId
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -26,9 +22,9 @@ class GameController(private val gameService: GameService) {
     }
 
     @GetMapping("/game/{id}")
-    fun getGameById(@PathVariable("id") id: String): ResponseEntity<Game>? {
+    fun getGameById(@PathVariable("id") id: String): ResponseEntity<GameDetail>? {
         if(ObjectId.isValid(id)) {
-            val game : Game? = this.prepareGame(gameService.findById(ObjectId(id)))
+            val game : GameDetail? = this.prepareGame(gameService.findById(ObjectId(id)))
             return ResponseEntity.ok(game)
         }
         return null
@@ -47,7 +43,7 @@ class GameController(private val gameService: GameService) {
     fun getGameByInitial(@RequestParam(required = true) initial: String): ResponseEntity<Game>? =
         ResponseEntity.ok(gameService.getGameByInitial(initial))
 
-    private fun prepareGame(game: Game?): Game? {
+    private fun prepareGame(game: GameDetail?): GameDetail? {
         if (game != null) {
             this.setAverageRating(game)
             this.setReleaseDateView(game)
@@ -76,7 +72,7 @@ class GameController(private val gameService: GameService) {
         return games.sortedByDescending { game: Game -> game.averageRating }
     }
 
-    private fun setAverageRating(game: Game): Game {
+    private fun setAverageRating(game: GameBase): GameBase {
         val ratings: List<Rating> = game.ratings
         val sum: Double = ratings.sumOf { it.value }.toDouble()
         if (ratings.isNotEmpty()) {
@@ -87,8 +83,8 @@ class GameController(private val gameService: GameService) {
         return game
     }
 
-    private fun setReleaseDateView(game: Game): Game {
-        game.releaseDateView = SimpleDateFormat("dd.MM.yyyy").format(game.releaseDate)
+    private fun setReleaseDateView(game: GameBase): GameBase {
+        game.releaseDateView = SimpleDateFormat("yyyy-MM-dd").format(game.releaseDate)
         return game
     }
 }
