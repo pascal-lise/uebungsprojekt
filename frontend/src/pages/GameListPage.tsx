@@ -3,10 +3,11 @@ import { useEffect, useState } from 'react';
 import GameCard from 'components/GameCard';
 import Game from 'model/Game';
 import Console from 'model/Console';
-import './GameList.sass';
+import './GameListPage.sass';
 import ConsoleFilter from 'components/ConsoleFilter';
 import GameSearchBar from 'components/GameSearchBar';
 import { getGames, getConsoles } from 'api/GamesApi';
+import { Link } from 'react-router-dom';
 
 export default function GameList() {
   const [games, setGames] = useState<Game[]>([])
@@ -43,7 +44,9 @@ export default function GameList() {
             .map((game: Game, idx: number) => {
               return (                
                 <Grid item key={idx} xs={4}>
-                  <GameCard game={game}/>
+                  <Link to={game.id} state={game.id} style={{ textDecoration: 'none' }}>
+                    <GameCard game={game}/>
+                  </Link>
                 </Grid>
               )
             })
