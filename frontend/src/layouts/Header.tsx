@@ -5,7 +5,7 @@ import './Header.sass';
 export default class Header extends React.Component {
   render() {
     return (
-      <header>
+      <header className='header'>
         <AppBar position='static' className='header'>
           <Toolbar>
             <Typography variant='h5'>Games Platform</Typography>

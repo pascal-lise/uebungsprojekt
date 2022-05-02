@@ -18,17 +18,20 @@ export default function GameDetailPage() {
     <div className='game-detail'>
       <img className="game-detail-img" src={game?.picturePath}/>
       <p className="game-detail-name">{game?.name}</p>
-      <div className="game-detail-text">
+      <dl className="game-detail-text">
         <div className="game-detail-text-data">
-          <p>Release date: {game?.releaseDateView}</p>
-          <p>Developer: {game?.developer}</p>
-          <p>Rating: {game?.averageRating}* ({game?.ratings.length} ratings)</p>
+          <dt>Release date:</dt>
+          <dd>{game?.releaseDateView}</dd>
+          <dt>Developer:</dt>
+          <dd>{game?.developer}</dd>
+          <dt>Rating:</dt>
+          <dd>{game?.averageRating}* ({game?.ratings.length} ratings)</dd>
           <a href={game?.trailer}><p>Trailer</p></a>
         </div>
         <div className="game-detail-text-description">
-          <p>{game?.description}</p>
+          <dd>{game?.description}</dd>
         </div>
-      </div>
+      </dl>
     </div>
   );
 }
