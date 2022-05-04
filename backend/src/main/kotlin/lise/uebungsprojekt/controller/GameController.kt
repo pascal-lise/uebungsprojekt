@@ -1,11 +1,12 @@
 package lise.uebungsprojekt.controller
 
-import lise.uebungsprojekt.model.Game
+import lise.uebungsprojekt.model.*
 import lise.uebungsprojekt.service.GameService
 import org.bson.types.ObjectId
-import org.springframework.http.ResponseEntity
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+
 
 @RestController
 @RequestMapping
@@ -13,12 +14,16 @@ import org.springframework.web.bind.annotation.*
 class GameController(private val gameService: GameService) {
 
     @GetMapping("/games")
-    fun getGames(): ResponseEntity<List<Game>> = ResponseEntity.ok(gameService.findAll())
+    fun getGames(@RequestParam(required = false, defaultValue = "") filterByConsoles: List<String>,
+                 @RequestParam(required = false, defaultValue = "") searchBy: String): ResponseEntity<List<Game>> {
+        return ResponseEntity.ok(gameService.findAll(filterByConsoles, searchBy))
+    }
 
     @GetMapping("/game/{id}")
-    fun getGameById(@PathVariable("id") id: String): ResponseEntity<Game>? {
-        if(ObjectId.isValid(id))
+    fun getGameById(@PathVariable("id") id: String): ResponseEntity<GameDetail>? {
+        if(ObjectId.isValid(id)) {
             return ResponseEntity.ok(gameService.findById(ObjectId(id)))
+        }
         return null
     }
 

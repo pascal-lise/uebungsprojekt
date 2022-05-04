@@ -1,10 +1,14 @@
-import Rating from "./Rating";
+import Rating from './Rating';
+import Console from './Console';
 
 export default interface Game {
-    name: string;
+    id: string,
+    name: string,
     developer: string,
     releaseDate: Date,
     releaseDateView: string,
-    ratings: Array<Rating>,
-    picturePath: string
+    ratings: Rating[],
+    averageRating: number,
+    picturePath: string,
+    consoles: Console[]
 }

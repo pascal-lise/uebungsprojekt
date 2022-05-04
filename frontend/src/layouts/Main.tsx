@@ -1,13 +1,17 @@
-import React from 'react';
-import GameList from '../pages/GameList';
+import GameListPage from 'pages/GameListPage';
 import './Main.sass';
+import GameDetailPage from 'pages/GameDetailPage';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-export default class Main extends React.Component {
-  render() {
+export default function Main() {
     return (
       <main>
-        <GameList/>
+        <Router>
+          <Routes>
+            <Route path="/" element={<GameListPage/>}/>
+            <Route path="/:id" element={<GameDetailPage/>}/>
+          </Routes>
+        </Router>
       </main>
     );
-  }
 }
