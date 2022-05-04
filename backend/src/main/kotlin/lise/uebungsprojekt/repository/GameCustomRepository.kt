@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface GameCustomRepository {
     fun getGameById(id: ObjectId): Game?
-    fun findAll(): List<Game>
+    fun findAll(filterByConsoles: List<String>, searchBy: String): List<Game>
 }
