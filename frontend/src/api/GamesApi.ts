@@ -1,13 +1,14 @@
 import Game from "model/Game"
+import GameDetail from "model/GameDetail"
 import Console from 'model/Console';
 
-export async function getGameById (id: string): Promise<Game> {
+export async function getGameById (id: string): Promise<GameDetail> {
     try {
         return await (await fetch(`${process.env.REACT_APP_API_URL}/game/${id}`)).json()
     } catch (e) { 
         console.error(e);
-        return { name: '', developer: '', releaseDate: new Date(), releaseDateView: '', 
-        ratings: [], averageRating: 0.0, picturePath: '', consoles: [] }
+        return { id: '', name: '', developer: '', releaseDate: new Date(), releaseDateView: '', 
+        ratings: [], averageRating: 0.0, picturePath: '', consoles: [], description: '', trailer: '' }
     }
 }
 export async function getGames (filterByConsoles: string[] = [], searchBy: string = ""): Promise<Game[]> {

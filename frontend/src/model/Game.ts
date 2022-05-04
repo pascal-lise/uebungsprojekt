@@ -2,7 +2,8 @@ import Rating from './Rating';
 import Console from './Console';
 
 export default interface Game {
-    name: string;
+    id: string,
+    name: string,
     developer: string,
     releaseDate: Date,
     releaseDateView: string,
