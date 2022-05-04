@@ -1,6 +1,6 @@
 package lise.uebungsprojekt.controller
 
-import lise.uebungsprojekt.model.Game
+import lise.uebungsprojekt.model.*
 import lise.uebungsprojekt.service.GameService
 import org.bson.types.ObjectId
 import org.springframework.http.HttpStatus
@@ -20,7 +20,7 @@ class GameController(private val gameService: GameService) {
     }
 
     @GetMapping("/game/{id}")
-    fun getGameById(@PathVariable("id") id: String): ResponseEntity<Game>? {
+    fun getGameById(@PathVariable("id") id: String): ResponseEntity<GameDetail>? {
         if(ObjectId.isValid(id)) {
             return ResponseEntity.ok(gameService.findById(ObjectId(id)))
         }

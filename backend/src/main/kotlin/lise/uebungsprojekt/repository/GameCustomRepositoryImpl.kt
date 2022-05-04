@@ -1,6 +1,7 @@
 package lise.uebungsprojekt.repository
 
 import lise.uebungsprojekt.model.Game
+import lise.uebungsprojekt.model.GameDetail
 import org.bson.types.ObjectId
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Sort
@@ -13,8 +14,10 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class GameCustomRepositoryImpl(@Autowired val mongoTemplate: MongoTemplate): GameCustomRepository {
-    override fun getGameById(id: ObjectId): Game? {
-        val results: List<Game> = this.getResult(id, listOf(), "")
+    override fun getGameById(id: ObjectId): GameDetail? {
+        val agg: Aggregation = this.buildAggregation(id, listOf(), "")
+        val results: List<GameDetail> = mongoTemplate.aggregate(agg, "game", GameDetail::class.java)
+                .mappedResults
         if(results.isNotEmpty()) {
             return results[0]
         }
@@ -22,17 +25,17 @@ class GameCustomRepositoryImpl(@Autowired val mongoTemplate: MongoTemplate): Gam
     }
 
     override fun findAll(filterByConsoles: List<String>, searchBy: String): List<Game> {
-        return this.getResult(null, filterByConsoles, searchBy)
+        val agg: Aggregation = this.buildAggregation(null, filterByConsoles, searchBy)
+        return mongoTemplate.aggregate(agg, "game", Game::class.java).mappedResults
     }
 
-    private fun getResult(id: ObjectId? = null, filterByConsoles: List<String>, searchBy: String): List<Game> {
+    private fun buildAggregation(id: ObjectId? = null, filterByConsoles: List<String>, searchBy: String): Aggregation {
         val ratingsLookup: LookupOperation = lookup("rating", "_id", "gameId", "ratings")
         val consoleLookup: LookupOperation = lookup("console", "consoles", "_id", "consoles")
         val addAvgRatingOp: AddFieldsOperation = AddFieldsOperation.builder().addField("averageRating")
             .withValueOf(ArithmeticOperators.valueOf("ratings.value").avg()).build()
-
-        val agg: Aggregation = if (id != null) {
-            newAggregation(match(Criteria("_id").`is`(id)), consoleLookup, ratingsLookup)
+        return if (id != null) {
+            newAggregation(match(Criteria("_id").`is`(id)), consoleLookup, ratingsLookup, addAvgRatingOp)
         } else {
             val filterByConsolesOp: MatchOperation = match(Criteria.where("consoles")
                 .elemMatch(Criteria.where("name").`in`(*filterByConsoles.toTypedArray())))
@@ -44,6 +47,5 @@ class GameCustomRepositoryImpl(@Autowired val mongoTemplate: MongoTemplate): Gam
                 newAggregation(searchNameOp, consoleLookup, ratingsLookup, addAvgRatingOp, sortOp)
             }
         }
-        return mongoTemplate.aggregate(agg, "game", Game::class.java).mappedResults
     }
 }
