@@ -11,5 +11,4 @@ import java.util.Date
 data class Game(@Id @JsonSerialize(using = ToStringSerializer::class) override val id: ObjectId,
                 override val name: String, override val releaseDate: Date, override var releaseDateView: String?,
                 override val developer: String, override var ratings: List<Rating>, override var averageRating: Double?,
-                override val picturePath: String?, override val consoles: List<Console>):
-        GameBase()
+                override val picturePath: String, override val consoles: List<Console>): GameBase()

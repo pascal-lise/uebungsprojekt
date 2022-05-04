@@ -15,6 +15,6 @@ abstract class GameBase {
     abstract val developer: String
     abstract var ratings: List<Rating>
     abstract var averageRating: Double?
-    abstract val picturePath: String?
+    abstract val picturePath: String
     abstract val consoles: List<Console>
 }
