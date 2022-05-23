@@ -4,7 +4,7 @@ import Console from 'model/Console';
 
 export async function getGameById (id: string): Promise<GameDetail> {
     try {
-        return await (await fetch(`${process.env.REACT_APP_API_URL}/game/${id}`)).json()
+        return (await fetch(`${process.env.REACT_APP_API_URL}/game/${id}`)).json()
     } catch (e) { 
         console.error(e);
         return { id: '', name: '', developer: '', releaseDate: new Date(), releaseDateView: '', 
