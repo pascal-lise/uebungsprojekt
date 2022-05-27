@@ -1,17 +1,22 @@
-import { AppBar, Toolbar, Typography } from '@mui/material';
-import React from 'react';
+import { AppBar, Button, Toolbar, Typography } from '@mui/material';
 import './Header.sass';
+import { useAuth } from "react-oidc-context";
 
-export default class Header extends React.Component {
-  render() {
-    return (
-      <header className='header'>
-        <AppBar position='static' className='header'>
-          <Toolbar>
-            <Typography variant='h5'>Games Platform</Typography>
-          </Toolbar>
-        </AppBar>
-      </header>
-    )
-  }
+export default function Header () {
+  const auth = useAuth();
+
+  return (
+    <header className='header'>
+      <AppBar position='static' className='header'>
+        <Toolbar>
+          <Typography variant='h6'>Games Platform</Typography>
+          { 
+            auth.isAuthenticated ?
+              <Button style={{ right: '2rem', position: 'fixed' }} onClick={() => void auth.signoutRedirect()}>Log out</Button> :
+              <Button style={{ right: '2rem', position: 'fixed' }} onClick={() => void auth.signinRedirect()}>Log in</Button> 
+          }
+        </Toolbar>
+      </AppBar>
+    </header>
+  )
 }
