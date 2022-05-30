@@ -8,7 +8,6 @@ export default interface Game {
     releaseDate: Date,
     releaseDateView: string,
     ratings: Rating[],
-    averageRating: number,
     picturePath: string,
-    consoles: Console[]
+    consoles: Console[],
 }
