@@ -1,12 +1,15 @@
 import './App.sass';
 import Header from 'layouts/Header';
 import Main from 'layouts/Main';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 function App() {
   return (
     <div className='App'>
-      <Header/>
-      <Main/>
+      <Router>
+        <Header/>
+        <Main/>
+      </Router>
     </div>
   );
 }
