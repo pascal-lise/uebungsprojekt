@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, Grid, Typography } from "@mui/material";
+import { Button, Card, CardContent, Grid, TextField, Typography } from "@mui/material";
 import { getGameById, postRating } from "api/GamesApi";
 import GameDetail from "model/GameDetail";
 import Rating from "model/Rating";
@@ -75,18 +75,20 @@ export default function GameDetailPage() {
                 <RatingComponent value={addiction} onChange={(e, val) => setAddiction(val)}/>
                 <RatingComponent value={action} onChange={(e, val) => setAction(val)}/>
               </div>
+              <TextField label="Comment (optional)" multiline rows={3} onChange={(e) => setComment(e.target.value)}/>
             </div>
             <Grid container spacing={2}>
             {
               game?.ratings.map((rating: Rating, idx: number) => {
                 return (
-                  <Grid item key={idx} xs={4} className="game-detail-text-ratings-card">
+                  <Grid item key={idx} xs={3} className="game-detail-text-ratings-card">
                     <Card>
                       <CardContent>
-                        <Typography>Graphics:</Typography><RatingComponent value={rating.graphics} readOnly />
-                        <Typography>Sound:</Typography><RatingComponent value={rating.sound} readOnly />
-                        <Typography>Addiction:</Typography><RatingComponent value={rating.addiction} readOnly />
-                        <Typography>Action:</Typography><RatingComponent value={rating.action} readOnly />
+                        <Typography fontSize={14}>Graphics:</Typography><RatingComponent value={rating.graphics} readOnly />
+                        <Typography fontSize={14}>Sound:</Typography><RatingComponent value={rating.sound} readOnly />
+                        <Typography fontSize={14}>Addiction:</Typography><RatingComponent value={rating.addiction} readOnly />
+                        <Typography fontSize={14}>Action:</Typography><RatingComponent value={rating.action} readOnly />
+                        <Typography fontSize={14}>Comment: {rating.comment}</Typography>
                       </CardContent>
                     </Card>
                   </Grid> 
