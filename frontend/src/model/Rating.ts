@@ -5,4 +5,5 @@ export default interface Rating {
     addiction: number | null,
     action: number | null,
     comment: string | undefined,
+    ratedBy: string | undefined
 }

@@ -33,9 +33,13 @@ export async function getConsoles (): Promise<Console[]> {
     }
 } 
 
-export async function postRating (rating: Rating) {    
+export async function postRating (rating: Rating, token: string) {    
     try {
-        return (await axios.post(`${process.env.REACT_APP_API_URL}/ratings/add`, rating))
+        return (await axios.post(
+            `${process.env.REACT_APP_API_URL}/ratings/add`, 
+            rating, 
+            { headers: { Authorization: `Bearer ${token}` } }
+        ))
     } catch (e) {
         console.error(e);
         return []
