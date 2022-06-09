@@ -5,12 +5,17 @@ import { Link } from 'react-router-dom';
 
 export default function Header () {
   const auth = useAuth();
+  const buttonStyle: React.CSSProperties = { 
+    right: '2rem', position: 'fixed' 
+  }
 
   function buttonLoginLogout() {
     const authenticated = auth.isAuthenticated
-    return <Button style={{ right: '2rem', position: 'fixed' }} onClick={() => authenticated ? void auth.signoutRedirect() : void auth.signinRedirect()}>
-      { authenticated ? 'Log out' : 'Log in' }
-    </Button>
+    if(authenticated) {
+      return <Button style={buttonStyle} onClick={() => auth.signoutRedirect()}>Log out</Button>
+    } else {
+      return <Button style={buttonStyle} onClick={() => auth.signinRedirect()}>Log in</Button>
+    }
   }
 
   return (
