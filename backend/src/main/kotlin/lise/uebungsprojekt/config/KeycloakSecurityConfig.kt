@@ -17,7 +17,11 @@ class KeycloakSecurityConfig : KeycloakWebSecurityConfigurerAdapter() {
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
         super.configure(http)
-        http.authorizeRequests()
+        http.cors()
+            .and()
+            .csrf()
+            .disable()
+            .authorizeRequests()
             .anyRequest()
             .permitAll()
     }

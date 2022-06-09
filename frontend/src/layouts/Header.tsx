@@ -1,6 +1,7 @@
 import { AppBar, Button, Toolbar, Typography } from '@mui/material';
 import './Header.sass';
 import { useAuth } from "react-oidc-context";
+import { Link } from 'react-router-dom';
 
 export default function Header () {
   const auth = useAuth();
@@ -16,8 +17,10 @@ export default function Header () {
     <header className='header'>
       <AppBar position='static' className='header'>
         <Toolbar>
-          <Typography variant='h6'>Games Platform</Typography>
-            { buttonLoginLogout() }
+          <Link to="/" style={{ textDecoration: 'none', color: '#444' }}>
+            <Typography variant='h6'>Game Platform</Typography>
+          </Link>
+          { buttonLoginLogout() }
         </Toolbar>
       </AppBar>
     </header>
