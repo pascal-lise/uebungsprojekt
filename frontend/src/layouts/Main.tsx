@@ -6,12 +6,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 export default function Main() {
     return (
       <main>
-        <Router>
-          <Routes>
-            <Route path="/" element={<GameListPage/>}/>
-            <Route path="/:id" element={<GameDetailPage/>}/>
-          </Routes>
-        </Router>
+        <Routes>
+          <Route path="/" element={<GameListPage/>}/>
+          <Route path="/:id" element={<GameDetailPage/>}/>
+        </Routes>
       </main>
     );
 }

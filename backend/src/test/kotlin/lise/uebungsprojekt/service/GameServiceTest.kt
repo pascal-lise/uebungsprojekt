@@ -25,11 +25,11 @@ class GameServiceTest {
 	private val gameService: GameService = GameService(gameRepository)
 	private val games: List<Game> = listOf(
 		Game(ObjectId(), "horizon zero dawn", Date(), "", "testDev", listOf(),
-			0.0, "", listOf()),
+			0.0, 0.0, 0.0, 0.0, "", listOf()),
 		Game(ObjectId(), "horizon forbidden west", Date(), "", "testDev", listOf(),
-			0.0, "", listOf()),
+			0.0, 0.0, 0.0, 0.0, "", listOf()),
 		Game(ObjectId(), "fifa 22", Date(), "", "testDev", listOf(),
-			0.0, "", listOf(Console("PS5")))
+			0.0, 0.0, 0.0, 0.0, "", listOf(Console("PS5")))
 	)
 
 	@Nested
@@ -82,7 +82,8 @@ class GameServiceTest {
 			val id = ObjectId()
 			Mockito.`when`(gameRepository.getGameById(id)).thenReturn(
 				GameDetail(ObjectId(), "horizon zero dawn", Date(), "", "testDev", listOf(),
-					0.0, "", listOf(), "", "")
+					0.0, 0.0, 0.0, 0.0, "",
+					listOf(), "", "")
 			)
 			val game: GameDetail? = gameService.findById(id)
 			assertNotNull(game)
