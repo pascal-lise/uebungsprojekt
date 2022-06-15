@@ -14,4 +14,5 @@ data class Rating(@JsonSerialize(using = ToStringSerializer::class) @field:NotNu
                   @field:NotNull @field:Min(1) @field:Max(5) val sound: Int,
                   @field:NotNull @field:Min(1) @field:Max(5) val addiction: Int,
                   @field:NotNull @field:Min(1) @field:Max(5) val action: Int,
-                  val comment: String?)
+                  val comment: String?,
+                  @field:NotNull val ratedBy: String)
