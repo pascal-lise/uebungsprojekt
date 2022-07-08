@@ -21,6 +21,7 @@ export default function GameDetailPage() {
   const [action, setAction] = useState<number>(1)
   const [comment, setComment] = useState<string | null>('')
   const [loginDisabled, setLoginDisabled] = useState<boolean>(false)
+  const ratingsCardFontSize: number = 14
   const auth = useAuth()
 
   function handleRating(event: any) {
@@ -94,11 +95,11 @@ export default function GameDetailPage() {
                     <Card>
                       <CardContent>
                         <Typography>{rating.ratedBy}</Typography>
-                        <Typography fontSize={14}>Graphics:</Typography><RatingComponent value={rating.graphics} readOnly />
-                        <Typography fontSize={14}>Sound:</Typography><RatingComponent value={rating.sound} readOnly />
-                        <Typography fontSize={14}>Addiction:</Typography><RatingComponent value={rating.addiction} readOnly />
-                        <Typography fontSize={14}>Action:</Typography><RatingComponent value={rating.action} readOnly />
-                        <Typography fontSize={14}>Comment: {rating.comment}</Typography>
+                        <Typography fontSize={ratingsCardFontSize}>Graphics:</Typography><RatingComponent value={rating.graphics} readOnly />
+                        <Typography fontSize={ratingsCardFontSize}>Sound:</Typography><RatingComponent value={rating.sound} readOnly />
+                        <Typography fontSize={ratingsCardFontSize}>Addiction:</Typography><RatingComponent value={rating.addiction} readOnly />
+                        <Typography fontSize={ratingsCardFontSize}>Action:</Typography><RatingComponent value={rating.action} readOnly />
+                        <Typography fontSize={ratingsCardFontSize}>Comment: {rating.comment}</Typography>
                       </CardContent>
                     </Card>
                   </Grid> 
