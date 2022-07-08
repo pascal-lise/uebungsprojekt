@@ -2,11 +2,11 @@ import Game from "model/Game"
 import GameDetail from "model/GameDetail"
 import Console from 'model/Console'
 import Rating from "model/Rating"
-import axios from 'axios'
+import Axios from './Axios'
 
 export async function getGameById (id: string): Promise<GameDetail> {
     try {
-        return (await axios.get(`${process.env.REACT_APP_API_URL}/game/${id}`)).data
+        return (await Axios.get(`/game/${id}`)).data
     } catch (e) { 
         console.error(e);
         return { id: '', name: '', developer: '', releaseDate: new Date(), releaseDateView: '', 
@@ -17,7 +17,7 @@ export async function getGameById (id: string): Promise<GameDetail> {
 
 export async function getGames (filterByConsoles: string[] = [], searchBy: string = ""): Promise<Game[]> {
     try {
-        return (await axios.get(`${process.env.REACT_APP_API_URL}/games?filterByConsoles=${filterByConsoles.join(',')}&searchBy=${searchBy}`)).data
+        return (await Axios.get(`/games?filterByConsoles=${filterByConsoles.join(',')}&searchBy=${searchBy}`)).data
     } catch (e) { 
         console.error(e);
         return []
@@ -26,20 +26,16 @@ export async function getGames (filterByConsoles: string[] = [], searchBy: strin
 
 export async function getConsoles (): Promise<Console[]> {
     try {
-        return (await axios.get(`${process.env.REACT_APP_API_URL}/consoles`)).data
+        return (await Axios.get('/consoles')).data
     } catch (e) { 
         console.error(e);
         return []
     }
 } 
 
-export async function postRating (rating: Rating, token: string) {    
+export async function postRating (rating: Rating) {    
     try {
-        return (await axios.post(
-            `${process.env.REACT_APP_API_URL}/ratings/add`, 
-            rating, 
-            { headers: { Authorization: `Bearer ${token}` } }
-        ))
+        return (await Axios.post('/ratings/add', rating))
     } catch (e) {
         console.error(e);
         return []
