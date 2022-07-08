@@ -15,18 +15,19 @@ export default function GameDetailPage() {
   const state: any = location.state
 
   const [game, setGame] = useState<GameDetail>()
-  const [graphics, setGraphics] = useState<number | null>(1)
-  const [sound, setSound] = useState<number | null>(1)
-  const [addiction, setAddiction] = useState<number | null>(1)
-  const [action, setAction] = useState<number | null>(1)
-  const [comment, setComment] = useState<string | undefined>('')
+  const [graphics, setGraphics] = useState<number>(1)
+  const [sound, setSound] = useState<number>(1)
+  const [addiction, setAddiction] = useState<number>(1)
+  const [action, setAction] = useState<number>(1)
+  const [comment, setComment] = useState<string | null>('')
   const [loginDisabled, setLoginDisabled] = useState<boolean>(false)
   const auth = useAuth()
 
   function handleRating(event: any) {
-    if(game && auth.user?.access_token) {
-      const rating: Rating = { gameId: game.id, graphics, sound, addiction, action, comment, ratedBy: auth.user.profile.preferred_username }
-      postRating(rating, auth.user?.access_token)
+    if(game) {
+      const user = auth.user!.profile.preferred_username
+      const rating: Rating = { gameId: game.id, graphics, sound, addiction, action, comment, ratedBy: user ? user : 'Unknown user' }
+      postRating(rating)
       game.ratings.push(rating)
       setLoginDisabled(true)
     }
@@ -78,10 +79,10 @@ export default function GameDetailPage() {
                 <RatingComponent value={game?.avgActionRating ?? 0.0} precision={.5} readOnly />
               </div>
               <div>
-                <RatingComponent value={graphics} onChange={(e, val) => setGraphics(val)}/>
-                <RatingComponent value={sound} onChange={(e, val) => setSound(val)}/>
-                <RatingComponent value={addiction} onChange={(e, val) => setAddiction(val)}/>
-                <RatingComponent value={action} onChange={(e, val) => setAction(val)}/>
+                <RatingComponent value={graphics} onChange={(e, val) => setGraphics(val ? val : 0)}/>
+                <RatingComponent value={sound} onChange={(e, val) => setSound(val ? val : 0)}/>
+                <RatingComponent value={addiction} onChange={(e, val) => setAddiction(val ? val : 0)}/>
+                <RatingComponent value={action} onChange={(e, val) => setAction(val ? val : 0)}/>
               </div>
               <TextField label="Comment (optional)" multiline rows={3} onChange={(e) => setComment(e.target.value)}/>
             </div>
