@@ -3,17 +3,13 @@ import { getGameById, postRating } from "api/GamesApi";
 import GameDetail from "model/GameDetail";
 import Rating from "model/Rating";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import './GameDetailPage.sass';
 import RatingComponent from '@mui/material/Rating';
 import Divider from '@mui/material/Divider';
 import { useAuth } from "react-oidc-context";
-
+import { useParams } from "react-router-dom";
 
 export default function GameDetailPage() {
-  const location = useLocation()
-  const state: any = location.state
-
   const [game, setGame] = useState<GameDetail>()
   const [graphics, setGraphics] = useState<number>(1)
   const [sound, setSound] = useState<number>(1)
@@ -21,6 +17,7 @@ export default function GameDetailPage() {
   const [action, setAction] = useState<number>(1)
   const [comment, setComment] = useState<string | null>('')
   const [loginDisabled, setLoginDisabled] = useState<boolean>(false)
+  const params = useParams()
   const ratingsCardFontSize: number = 14
   const auth = useAuth()
 
@@ -35,12 +32,14 @@ export default function GameDetailPage() {
   }
 
   useEffect(() => {    
-    getGameById(state).then(setGame)
-  }, [state])
+    if(params.id) {
+      getGameById(params.id).then(setGame)
+    }
+  }, [])
 
   useEffect(() => {    
     if(game && auth.user) {
-      setLoginDisabled(game?.ratings.some((r) => r.ratedBy === auth.user?.profile.preferred_username))
+      setLoginDisabled(game?.ratings.some(r => r.ratedBy === auth.user?.profile.preferred_username))
     }
   }, [game, auth.user])
 
@@ -89,22 +88,24 @@ export default function GameDetailPage() {
             </div>
             <Grid container spacing={2}>
             {
-              game?.ratings.map((rating: Rating, idx: number) => {
-                return (
-                  <Grid item key={idx} xs={3} className="game-detail-text-ratings-card">
-                    <Card>
-                      <CardContent>
-                        <Typography>{rating.ratedBy}</Typography>
-                        <Typography fontSize={ratingsCardFontSize}>Graphics:</Typography><RatingComponent value={rating.graphics} readOnly />
-                        <Typography fontSize={ratingsCardFontSize}>Sound:</Typography><RatingComponent value={rating.sound} readOnly />
-                        <Typography fontSize={ratingsCardFontSize}>Addiction:</Typography><RatingComponent value={rating.addiction} readOnly />
-                        <Typography fontSize={ratingsCardFontSize}>Action:</Typography><RatingComponent value={rating.action} readOnly />
-                        <Typography fontSize={ratingsCardFontSize}>Comment: {rating.comment}</Typography>
-                      </CardContent>
-                    </Card>
-                  </Grid> 
-                ) 
-              })
+              game?.ratings ? (
+                game?.ratings.map((rating: Rating, idx: number) => {
+                  return (
+                    <Grid item key={idx} xs={3} className="game-detail-text-ratings-card">
+                      <Card>
+                        <CardContent>
+                          <Typography>{rating.ratedBy}</Typography>
+                          <Typography fontSize={ratingsCardFontSize}>Graphics:</Typography><RatingComponent value={rating.graphics} readOnly />
+                          <Typography fontSize={ratingsCardFontSize}>Sound:</Typography><RatingComponent value={rating.sound} readOnly />
+                          <Typography fontSize={ratingsCardFontSize}>Addiction:</Typography><RatingComponent value={rating.addiction} readOnly />
+                          <Typography fontSize={ratingsCardFontSize}>Action:</Typography><RatingComponent value={rating.action} readOnly />
+                          <Typography fontSize={ratingsCardFontSize}>Comment: {rating.comment}</Typography>
+                        </CardContent>
+                      </Card>
+                    </Grid> 
+                  ) 
+                })
+              ) : []
             }
             </Grid>
           </div>
