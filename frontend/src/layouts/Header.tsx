@@ -22,6 +22,8 @@ export default function Header () {
     const token = auth.user?.access_token
     if(token) {
       localStorage.setItem('token', token)
+    } else {
+      localStorage.removeItem('token')
     }
   }, [auth.user?.access_token])
 
