@@ -3,28 +3,28 @@ import { getGameById, postRating } from "api/GamesApi";
 import GameDetail from "model/GameDetail";
 import Rating from "model/Rating";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import './GameDetailPage.sass';
 import RatingComponent from '@mui/material/Rating';
 import Divider from '@mui/material/Divider';
-
+import { useAuth } from "react-oidc-context";
+import { useParams } from "react-router-dom";
 
 export default function GameDetailPage() {
-  const location = useLocation()
-  const state: any = location.state
-
   const [game, setGame] = useState<GameDetail>()
-  const [graphics, setGraphics] = useState<number | null>(1)
-  const [sound, setSound] = useState<number | null>(1)
-  const [addiction, setAddiction] = useState<number | null>(1)
-  const [action, setAction] = useState<number | null>(1)
-  const [comment, setComment] = useState<string | undefined>('')
+  const [graphics, setGraphics] = useState<number>(1)
+  const [sound, setSound] = useState<number>(1)
+  const [addiction, setAddiction] = useState<number>(1)
+  const [action, setAction] = useState<number>(1)
+  const [comment, setComment] = useState<string | null>('')
   const [loginDisabled, setLoginDisabled] = useState<boolean>(false)
+  const params = useParams()
   const ratingsCardFontSize: number = 14
+  const auth = useAuth()
 
   function handleRating(event: any) {
     if(game) {
-      const rating: Rating = { gameId: game.id, graphics, sound, addiction, action, comment }
+      const user = auth.user!.profile.preferred_username
+      const rating: Rating = { gameId: game.id, graphics, sound, addiction, action, comment, ratedBy: user ? user : 'Unknown user' }
       postRating(rating)
       game.ratings.push(rating)
       setLoginDisabled(true)
@@ -32,8 +32,16 @@ export default function GameDetailPage() {
   }
 
   useEffect(() => {    
-    getGameById(state).then(setGame)
-  }, [state, game?.ratings])
+    if(params.id) {
+      getGameById(params.id).then(setGame)
+    }
+  }, [])
+
+  useEffect(() => {    
+    if(game && auth.user) {
+      setLoginDisabled(game?.ratings.some(r => r.ratedBy === auth.user?.profile.preferred_username))
+    }
+  }, [game, auth.user])
 
   return (
     <div className='game-detail'>
@@ -55,7 +63,7 @@ export default function GameDetailPage() {
         <div className="game-detail-text-ratings">
             <div className="game-detail-text-ratings-header">
               <h3>Ratings</h3>
-              <Button disabled={loginDisabled} variant="contained" className="game-detail-text-ratings-add" onClick={handleRating}>Submit Rating</Button>
+              <Button disabled={loginDisabled || !auth.isAuthenticated} variant="contained" className="game-detail-text-ratings-add" onClick={handleRating}>Submit Rating</Button>
             </div>
             <div className="game-detail-text-ratings-values">
               <div>
@@ -71,30 +79,33 @@ export default function GameDetailPage() {
                 <RatingComponent value={game?.avgActionRating ?? 0.0} precision={.5} readOnly />
               </div>
               <div>
-                <RatingComponent value={graphics} onChange={(e, val) => setGraphics(val)}/>
-                <RatingComponent value={sound} onChange={(e, val) => setSound(val)}/>
-                <RatingComponent value={addiction} onChange={(e, val) => setAddiction(val)}/>
-                <RatingComponent value={action} onChange={(e, val) => setAction(val)}/>
+                <RatingComponent value={graphics} onChange={(e, val) => setGraphics(val ? val : 0)}/>
+                <RatingComponent value={sound} onChange={(e, val) => setSound(val ? val : 0)}/>
+                <RatingComponent value={addiction} onChange={(e, val) => setAddiction(val ? val : 0)}/>
+                <RatingComponent value={action} onChange={(e, val) => setAction(val ? val : 0)}/>
               </div>
               <TextField label="Comment (optional)" multiline rows={3} onChange={(e) => setComment(e.target.value)}/>
             </div>
             <Grid container spacing={2}>
             {
-              game?.ratings.map((rating: Rating, idx: number) => {
-                return (
-                  <Grid item key={idx} xs={3} className="game-detail-text-ratings-card">
-                    <Card>
-                      <CardContent>
-                        <Typography fontSize={ratingsCardFontSize}>Graphics:</Typography><RatingComponent value={rating.graphics} readOnly />
-                        <Typography fontSize={ratingsCardFontSize}>Sound:</Typography><RatingComponent value={rating.sound} readOnly />
-                        <Typography fontSize={ratingsCardFontSize}>Addiction:</Typography><RatingComponent value={rating.addiction} readOnly />
-                        <Typography fontSize={ratingsCardFontSize}>Action:</Typography><RatingComponent value={rating.action} readOnly />
-                        <Typography fontSize={ratingsCardFontSize}>Comment: {rating.comment}</Typography>
-                      </CardContent>
-                    </Card>
-                  </Grid> 
-                ) 
-              })
+              game?.ratings ? (
+                game?.ratings.map((rating: Rating, idx: number) => {
+                  return (
+                    <Grid item key={idx} xs={3} className="game-detail-text-ratings-card">
+                      <Card>
+                        <CardContent>
+                          <Typography>{rating.ratedBy}</Typography>
+                          <Typography fontSize={ratingsCardFontSize}>Graphics:</Typography><RatingComponent value={rating.graphics} readOnly />
+                          <Typography fontSize={ratingsCardFontSize}>Sound:</Typography><RatingComponent value={rating.sound} readOnly />
+                          <Typography fontSize={ratingsCardFontSize}>Addiction:</Typography><RatingComponent value={rating.addiction} readOnly />
+                          <Typography fontSize={ratingsCardFontSize}>Action:</Typography><RatingComponent value={rating.action} readOnly />
+                          <Typography fontSize={ratingsCardFontSize}>Comment: {rating.comment}</Typography>
+                        </CardContent>
+                      </Card>
+                    </Grid> 
+                  ) 
+                })
+              ) : []
             }
             </Grid>
           </div>

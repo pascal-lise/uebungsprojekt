@@ -1,7 +1,7 @@
 import GameListPage from 'pages/GameListPage';
 import './Main.sass';
 import GameDetailPage from 'pages/GameDetailPage';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 export default function Main() {
     return (
