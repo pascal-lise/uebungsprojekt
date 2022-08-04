@@ -21,6 +21,7 @@ class GameController(private val gameService: GameService) {
 
     @GetMapping("/game/{id}")
     fun getGameById(@PathVariable("id") id: String): ResponseEntity<GameDetail>? {
+        print("this is a test")
         if(ObjectId.isValid(id)) {
             return ResponseEntity.ok(gameService.findById(ObjectId(id)))
         }
